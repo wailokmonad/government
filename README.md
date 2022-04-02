@@ -2,6 +2,8 @@
 
 This is a government smart contract project that would allow people in the community to propose ideas and vote on it. The contract is expected to be deployed and run in EVM-based blockchains.
 
+Rinkeby contract address: 0xB268A43cBfc1c047eB4d93504749Eb3C7CBFB64E
+
 <br />
 
 ### 1) Install the dependencies
