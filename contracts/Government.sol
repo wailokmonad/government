@@ -105,7 +105,7 @@ contract Government is Ownable, Pausable, AccessControl{
         uint _startTime, 
         uint _endTime, 
         string[] memory _choices
-    ) public isPartOfCommunity(_msgSender()) {
+    ) external isPartOfCommunity(_msgSender()) {
 
         require( bytes(_description).length > 0, "Government::addProposal: description cannot be empty");
         require( _choices.length >= 2, "Government::addProposal: Number of choices cannot be smaller than TWO");
@@ -171,7 +171,7 @@ contract Government is Ownable, Pausable, AccessControl{
      * @dev close the proposal
      * @param _proposalId the proposal Id
      **/
-    function closeProposal( uint _proposalId ) public onlyAdmin isValidProposal(_proposalId) {
+    function closeProposal( uint _proposalId ) external onlyAdmin isValidProposal(_proposalId) {
         Proposal storage p = _proposal[ _proposalId ];
         p.active = false;
         emit ProposalClosed(_proposalId);
@@ -200,7 +200,7 @@ contract Government is Ownable, Pausable, AccessControl{
      * @dev add member
      * @param _add the array of member address
      **/
-    function addMember(address[] memory _add) public onlyAdmin {
+    function addMember(address[] memory _add) external onlyAdmin {
         require(_add.length <= MAX_MEMBER, "Government::batchAddMember: Array size too large");
         for ( uint i = 0; i < _add.length; i++ ) {
             _addMember(_add[i]);
@@ -211,7 +211,7 @@ contract Government is Ownable, Pausable, AccessControl{
      * @dev remove member
      * @param _add the array of member address
      **/
-    function removeMember(address[] memory _add) public onlyAdmin {
+    function removeMember(address[] memory _add) external onlyAdmin {
         require(_add.length <= MAX_MEMBER, "Government::batchRemoveMember: Array size too large");
         for ( uint i = 0; i < _add.length; i++ ) {
             _removeMember(_add[i]);
@@ -241,7 +241,7 @@ contract Government is Ownable, Pausable, AccessControl{
      * @dev check if the address is a member or not
      * @param _add the array of member address
      **/
-    function member(address _add) public virtual view returns (bool) {
+    function member(address _add) external virtual view returns (bool) {
         return _member[_add];
     }
 
@@ -250,21 +250,21 @@ contract Government is Ownable, Pausable, AccessControl{
      * @param _id proposal Id
      * @param _add the array of member address
      **/
-    function isVoted(uint _id, address _add) public virtual view returns (bool) {
+    function isVoted(uint _id, address _add) external virtual view returns (bool) {
         return _isVoted[_id][_add];
     }
 
     /**
      * @dev return the total number of proposal
      **/
-    function numberOfProposals() public virtual view returns (uint) {
+    function numberOfProposals() external virtual view returns (uint) {
         return _proposal.length;
     }
 
     /**
      * @dev return the total number of member
      **/
-    function numberOfMember() public virtual view returns (uint) {
+    function numberOfMember() external virtual view returns (uint) {
         return _numberOfMember.current();
     }
 
@@ -280,7 +280,7 @@ contract Government is Ownable, Pausable, AccessControl{
     * @dev Add an account to the admin role. Restricted to admins.
     * @param _account address from the account to add
     */  
-    function addAdmin(address _account) public virtual onlyOwner {
+    function addAdmin(address _account) external virtual onlyOwner {
         grantRole(DEFAULT_ADMIN_ROLE, _account);
         _addMember(_account);
     }
@@ -289,7 +289,7 @@ contract Government is Ownable, Pausable, AccessControl{
     * @dev Remove an account from the admin role. Restricted to admins.
     * @param _account address from the account to add
     */  
-    function removeAdmin(address _account) public virtual onlyOwner {
+    function removeAdmin(address _account) external virtual onlyOwner {
         revokeRole(DEFAULT_ADMIN_ROLE, _account);
         _removeMember(_account);
     }
